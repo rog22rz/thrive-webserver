@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"thrive-webserver/util"
 )
 
 // Form struct for creator form submissions
@@ -41,6 +42,11 @@ type CreatorItem struct {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
+	}
+
 	if r.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, "This is the Thrive webserver")
@@ -63,7 +69,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Build new POST request to send to Creator colleciton in CMS
-		url := "https://api.webflow.com/collections//items"
+		url := "https://api.webflow.com/collections/" + config.CreatorCollectionId + "/items"
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Fatal(err)
@@ -71,7 +77,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 		req.Header.Add("accept", "application/json")
 		req.Header.Add("content-type", "application/json")
-		req.Header.Add("authorization", "Bearer ")
+		req.Header.Add("authorization", "Bearer "+config.APIToken)
 
 		//Send new CreatorItem to CMS
 		client := &http.Client{}
