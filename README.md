@@ -3,19 +3,19 @@
 [![Go Version](https://img.shields.io/badge/go-v1.16-blue)](https://golang.org/)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
 
-TLDR: This is a webserver that has been designed to POST a new item to a Webflow CMS when it receives a POST from a Webflow webhook. 
+TLDR: This is a webserver designed to POST a new item to a Webflow CMS when it receives a POST from a Webflow webhook. 
 
 ## About
 
-This project was started because a friend of mine approach me with a problem she was having with her Webflow website. She wanted to have a form that would directly add items to their CMS when the form was submitted. The problems was that Webflow doesn't allow that functionality, which forces users to go through 3rd party softwares such as Zapier to link a form to a CMS, and costs a monthly subscription. 
+This project was started because a friend of mine approached me with a problem she was having with her Webflow website. She wanted to have a form that would directly add items to their CMS when the form was submitted. The problem was that Webflow doesn't allow that functionality, which forces users to go through 3rd party software such as Zapier to link a form to a CMS, and costs a monthly subscription.
 
-After a bit of research, I saw that Webflow allow their users to have webhooks which send POST requests on form submit with the details of the form, and also an API for adding items to their CMS. They simply lacked the middle layer, a webserver, which could connect the two functionalities. I thought to myself that such a webserver, which would simply handle the data from the webhook, format it and then POST it to the CMS would be quite an easy task and would allow me to play around with Golang. I would also save my friend around 40$ a month, which would allow more funds for her grassroot project. 
+After a bit of research, I saw that Webflow allow their users to have webhooks that send POST requests on form submission with the details of the form, and also an API for adding items to their CMS. They simply lacked the middle layer, a web server, which could connect the two functionalities. I thought to myself that such a web server, which would simply handle the data from the webhook, format it and then POST it to the CMS would be quite an easy task and would allow me to play around with Golang. I would also save my friend around 40$ a month, which would allow more funds for her grassroots project.
 
-Therefore, this repo contains the code that I have written for the webserver to handle the task that I have described above. I then deployed the webserver using Docker and Google Cloud Run. 
+Therefore, this repo contains the code that I have written for the webserver to handle the task that I have described above. I then deployed the web server using Docker and Google Cloud Run.
 
 Please feel free to reach out to me if you have any questions or if you just want to connect!
 
-PS: Also go check out my friend's awesome project which showcases the new generation of Toronto Creatives: https://thrive-artwork-afefc46898-d9f19e4ce600d.webflow.io/
+PS: Also go check out my friend's awesome project which showcases the new generation of Toronto Creatives: https://thrive-artwork-afefc46898-d9f19e4ce600d.webflow.io/
 
 ## Installation
 
