@@ -3,7 +3,7 @@
 [![Go Version](https://img.shields.io/badge/go-v1.16-blue)](https://golang.org/)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
 
-TLDR: This is a webserver that has been designed to post a new item to a Webflow CMS when it receives a POST from a weflow webhook. 
+TLDR: This is a webserver that has been designed to POST a new item to a Webflow CMS when it receives a POST from a Webflow webhook. 
 
 ## About
 
