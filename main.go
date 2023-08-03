@@ -7,20 +7,25 @@ import (
 	"log"
 	"net/http"
 	"thrive-webserver/util"
+
+	"github.com/iancoleman/strcase"
 )
 
 // Form struct for creator form submissions
 type Form struct {
-	SiteId string `json:"site"`
-	Data   struct {
-		ArtistName         string `json:"Name of Artist"`
-		Name               string `json:"Name"`
-		Pronouns           string `json:"Pronouns"`
-		ContactMethod      string `json:"Preferred Method of Contact"`
-		Contact            string `json:"Phone/Email"`
-		Budget             string `json:"Budget"`
-		Date               string `json:"Delivery Date"`
-		ProjectDescription string `json:"Field"`
+	FormName string `json:"name"`
+	SiteId   string `json:"site"`
+	Data     struct {
+		ArtistName            string `json:"Artist Name"`
+		Email                 string `json:"Email"`
+		PhoneNumber           string `json:"Phone Number"`
+		Occupation            string `json:"Occupation"`
+		ShortDescription      string `json:"Short Description"`
+		LongDescription       string `json:"Long Description"`
+		Website               string `json:"Website"`
+		Socials               string `json:"Socials"`
+		HowCollaboartingWorks string `json:"How Collaboration Works"`
+		MainImage             string `json:"Main Image"`
 	} `json:"data"`
 }
 
@@ -63,7 +68,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Build CreatorItem based on received form
-		jsonData, err := buildCreatorItem(form)
+		jsonData, err := mapperCreatorToItem(form)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -92,7 +97,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 // Build a CreatorItem based on Form
-func buildCreatorItem(form Form) ([]byte, error) {
+func mapperCreatorToItem(form Form) ([]byte, error) {
 	creatorItem := CreatorItem{
 		Fields: struct {
 			Slug                   string `json:"slug"`
@@ -107,12 +112,17 @@ func buildCreatorItem(form Form) ([]byte, error) {
 			Collaborating          string `json:"how-collaborating-works"`
 			HeroImage              string `json:"artist-hero-image"`
 		}{
-			Slug:                   "testSlug",
-			Name:                   "testName",
+			Slug:                   strcase.ToKebab(form.Data.ArtistName),
+			Name:                   form.Data.ArtistName,
 			IsArchived:             false,
 			IsDraft:                true,
-			NotAcceptingCommission: false,
-			AdditionalInfo:         "testAdditionalInfo",
+			NotAcceptingCommission: form.Data.HowCollaboartingWorks == "",
+			AdditionalInfo:         form.Data.LongDescription,
+			InstagramHandle:        form.Data.Socials,
+			Occupation:             form.Data.Occupation,
+			ArtistDescription:      form.Data.ShortDescription,
+			Collaborating:          form.Data.HowCollaboartingWorks,
+			HeroImage:              form.Data.MainImage,
 		},
 	}
 
