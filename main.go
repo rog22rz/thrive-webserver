@@ -55,6 +55,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// 	log.Fatal("cannot load config:", err)
 	// }
 
+	fmt.Println(apiToken)
+	fmt.Println(creatorCollectionId)
+
 	if r.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, "This is the Thrive webserver")
