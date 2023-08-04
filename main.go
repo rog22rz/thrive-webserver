@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"thrive-webserver/util"
+	"os"
 
 	"github.com/iancoleman/strcase"
 )
@@ -47,10 +47,13 @@ type CreatorItem struct {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	config, err := util.LoadConfig(".")
-	if err != nil {
-		log.Fatal("cannot load config:", err)
-	}
+	apiToken := os.Getenv("_API_TOKEN")
+	creatorCollectionId := os.Getenv("_COLLECTION_ID_CREATOR")
+
+	// config, err := util.LoadConfig(".")
+	// if err != nil {
+	// 	log.Fatal("cannot load config:", err)
+	// }
 
 	if r.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
@@ -74,7 +77,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Build new POST request to send to Creator colleciton in CMS
-		url := "https://api.webflow.com/collections/" + config.CreatorCollectionId + "/items"
+		url := "https://api.webflow.com/collections/" + creatorCollectionId + "/items"
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Fatal(err)
@@ -82,7 +85,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 		req.Header.Add("accept", "application/json")
 		req.Header.Add("content-type", "application/json")
-		req.Header.Add("authorization", "Bearer "+config.APIToken)
+		req.Header.Add("authorization", "Bearer "+apiToken)
 
 		//Send new CreatorItem to CMS
 		client := &http.Client{}
