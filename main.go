@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"thrive-webserver/logger"
 
 	"github.com/iancoleman/strcase"
 )
@@ -50,13 +51,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	apiToken := os.Getenv("_API_TOKEN")
 	creatorCollectionId := os.Getenv("_COLLECTION_ID_CREATOR")
 
+	projectID := "thrive-webserver"
+	logName := "log"
+
+	err := logger.Init(projectID, logName)
+	if err != nil {
+		log.Fatalf("Failed to initialize logger: %v", err)
+	}
+	defer logger.Close()
+
 	// config, err := util.LoadConfig(".")
 	// if err != nil {
 	// 	log.Fatal("cannot load config:", err)
 	// }
-
-	fmt.Println(apiToken)
-	fmt.Println(creatorCollectionId)
 
 	if r.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
@@ -78,6 +85,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		logger.Log(creatorCollectionId)
+		logger.Log(apiToken)
 
 		//Build new POST request to send to Creator colleciton in CMS
 		url := "https://api.webflow.com/collections/" + creatorCollectionId + "/items"
