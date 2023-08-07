@@ -86,8 +86,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		logger.Log(creatorCollectionId)
-		logger.Log(apiToken)
+		logger.Log("Creator Collection ID:" + creatorCollectionId)
+		logger.Log("API Token" + apiToken)
 
 		//Build new POST request to send to Creator colleciton in CMS
 		url := "https://api.webflow.com/collections/" + creatorCollectionId + "/items"
