@@ -51,7 +51,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	apiToken := os.Getenv("_API_TOKEN")
 	creatorCollectionId := os.Getenv("_COLLECTION_ID_CREATOR")
 
-	projectID := "thrive-webserver"
+	projectID := "thrive-389702"
 	logName := "log"
 
 	err := logger.Init(projectID, logName)
