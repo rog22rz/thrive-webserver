@@ -48,8 +48,8 @@ type CreatorItem struct {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	apiToken := os.Getenv("_API_TOKEN")
-	creatorCollectionId := os.Getenv("_COLLECTION_ID_CREATOR")
+	apiToken := os.Getenv("API_TOKEN")
+	creatorCollectionId := os.Getenv("COLLECTION_ID_CREATOR")
 
 	projectID := "thrive-389702"
 	logName := "log"
@@ -87,7 +87,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		logger.Log("Creator Collection ID:" + creatorCollectionId)
-		logger.Log("API Token" + apiToken)
+		logger.Log("API Token:" + apiToken)
 
 		//Build new POST request to send to Creator colleciton in CMS
 		url := "https://api.webflow.com/collections/" + creatorCollectionId + "/items"
