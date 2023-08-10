@@ -51,6 +51,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	apiToken := os.Getenv("API_TOKEN")
 	creatorCollectionId := os.Getenv("COLLECTION_ID_CREATOR")
 
+	//For Logger
 	projectID := "thrive-389702"
 	logName := "log"
 
@@ -60,6 +61,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer logger.Close()
 
+	//For dev, get env variables from config file
 	// config, err := util.LoadConfig(".")
 	// if err != nil {
 	// 	log.Fatal("cannot load config:", err)
@@ -72,25 +74,32 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
 		var form Form
+		var jsonData []byte
+		var err error
+		var url string
 
 		//Parse body received from webflow webhook
-		err := json.NewDecoder(r.Body).Decode(&form)
+		err = json.NewDecoder(r.Body).Decode(&form)
 		if err != nil {
 			http.Error(w, "Error parsing JSON body", http.StatusBadRequest)
 			return
 		}
 
-		//Build CreatorItem based on received form
-		jsonData, err := mapperCreatorToItem(form)
-		if err != nil {
-			log.Fatal(err)
+		//Build items based on received form
+		if form.FormName == "Creator Form" {
+			jsonData, err = mapperCreatorToItem(form)
+			if err != nil {
+				log.Fatal(err)
+			}
+			url = "https://api.webflow.com/collections/" + creatorCollectionId + "/items"
+		} else if form.FormName == "Project Form" {
+			jsonData, err = mapProjectToItem(form)
+			if err != nil {
+				log.Fatal(err)
+			}
+			url = "https://api.webflow.com/collections/" + projectCollectionId + "/items"
 		}
 
-		logger.Log("Creator Collection ID:" + creatorCollectionId)
-		logger.Log("API Token:" + apiToken)
-
-		//Build new POST request to send to Creator colleciton in CMS
-		url := "https://api.webflow.com/collections/" + creatorCollectionId + "/items"
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Fatal(err)
