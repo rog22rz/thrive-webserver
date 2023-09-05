@@ -13,10 +13,10 @@ var (
 )
 
 // Init initializes the logger.
-func Init(projectID, logName string) error {
+func Init(productID, logName string) error {
 	ctx := context.Background()
 	var err error
-	client, err = logging.NewClient(ctx, projectID)
+	client, err = logging.NewClient(ctx, productID)
 	if err != nil {
 		return err
 	}

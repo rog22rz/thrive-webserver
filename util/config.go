@@ -5,6 +5,8 @@ import "github.com/spf13/viper"
 type Config struct {
 	APIToken            string `mapstructure:"API_TOKEN"`
 	CreatorCollectionId string `mapstructure:"CREATOR_COLLECTION_ID"`
+	ProductCollectionId string `mapstructure:"PRODUCT_COLLECTION_ID"`
+	SiteId              string `mapstructure:"SITE_ID"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

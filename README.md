@@ -3,7 +3,7 @@
 [![Go Version](https://img.shields.io/badge/go-v1.16-blue)](https://golang.org/)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
 
-TLDR: This is a webserver designed to POST a new item to a Webflow CMS when it receives a POST from a Webflow webhook. 
+TLDR: This is a webserver designed to POST a new item to a Webflow CMS when it receives a POST from a Webflow webhook.
 
 ## About
 
@@ -19,7 +19,7 @@ PS: Also go check out my friend's awesome project which showcases the new genera
 
 ## Installation
 
-To install, simply clone the project and make sure you have all the packages installed. There is an app.env file missing for obvious security reasons which would contain the API key and CMS collection ID. However, if you replace the url on line 72 of main.go with your own link form https://webhook.site/, and send a POST request to your localhost:8080 with an item such as the JSON below, you should see the request appear on your https://webhook.site/ with the new format of the CMS. 
+To install, simply clone the project and make sure you have all the packages installed. There is an app.env file missing for obvious security reasons which would contain the API key and CMS collection ID. However, if you replace the url on line 72 of main.go with your own link form https://webhook.site/, and send a POST request to your localhost:8080 with an item such as the JSON below, you should see the request appear on your https://webhook.site/ with the new format of the CMS.
 
 ```json
 {
@@ -48,3 +48,4 @@ To install, simply clone the project and make sure you have all the packages ins
 
 ```bash
 git clone https://github.com/rog22rz/thrive-webserver
+```
