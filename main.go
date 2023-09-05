@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"thrive-webserver/util"
+	"os"
+	"thrive-webserver/logger"
 
 	"github.com/iancoleman/strcase"
 )
@@ -91,28 +92,28 @@ type ProductItem struct {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	// apiToken := os.Getenv("API_TOKEN")
-	// creatorCollectionId := os.Getenv("COLLECTION_ID_CREATOR")
-	// siteId := os.Getenv("SITE_ID")
+	apiToken := os.Getenv("API_TOKEN")
+	creatorCollectionId := os.Getenv("COLLECTION_ID_CREATOR")
+	siteId := os.Getenv("SITE_ID")
 
 	//For Logger
-	// productID := "thrive-389702"
-	// logName := "log"
+	productID := "thrive-389702"
+	logName := "log"
 
-	// err := logger.Init(productID, logName)
-	// if err != nil {
-	// 	log.Fatalf("Failed to initialize logger: %v", err)
-	// }
-	// defer logger.Close()
+	err := logger.Init(productID, logName)
+	if err != nil {
+		log.Fatalf("Failed to initialize logger: %v", err)
+	}
+	defer logger.Close()
 
 	//For dev, get env variables from config file
-	config, err := util.LoadConfig(".")
-	if err != nil {
-		log.Fatal("cannot load config:", err)
-	}
-	apiToken := config.APIToken
-	creatorCollectionId := config.CreatorCollectionId
-	siteId := config.SiteId
+	// config, err := util.LoadConfig(".")
+	// if err != nil {
+	// 	log.Fatal("cannot load config:", err)
+	// }
+	// apiToken := config.APIToken
+	// creatorCollectionId := config.CreatorCollectionId
+	// siteId := config.SiteId
 
 	if r.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
