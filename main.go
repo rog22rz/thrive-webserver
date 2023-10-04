@@ -9,6 +9,9 @@ import (
 	"os"
 	"thrive-webserver/logger"
 
+	//For dev
+	// "thrive-webserver/util"
+
 	"github.com/iancoleman/strcase"
 )
 
@@ -42,7 +45,7 @@ type CreatorItem struct {
 	FieldData  struct {
 		Slug                   string `json:"slug"`
 		Name                   string `json:"name"`
-		NotAcceptingCommission bool   `json:"not-accepting-commission-products"`
+		NotAcceptingCommission bool   `json:"not-accepting-commission-projects"`
 		AdditionalInfo         string `json:"additional-information"`
 		InstagramHandle        string `json:"instagram-handle-2"`
 		Occupation             string `json:"occupation"`
@@ -138,34 +141,35 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			jsonBlob, _ := json.Marshal(form)
 			err := json.Unmarshal(jsonBlob, &creatorForm)
 			if err != nil {
-				log.Fatal(err)
+				log.Println(err)
 			}
 			jsonData, err = mapperCreatorToItem(creatorForm)
 			if err != nil {
-				log.Fatal(err)
+				log.Println(err)
 			}
-			url = "https://api.webflow.com/collections/" + creatorCollectionId + "/items"
+			url = "https://api.webflow.com/v2/collections/" + creatorCollectionId + "/items"
+			// url = "https://webhook.site/f20fc6e6-54b7-4ebf-b027-1d466cafc692"
 		} else if form.FormName == "Product Form" {
 			var productForm ProductForm
 			jsonBlob, _ := json.Marshal(form)
 			err := json.Unmarshal(jsonBlob, &productForm)
 			if err != nil {
-				log.Fatal(err)
+				log.Println(err)
 			}
 			jsonData, err = mapProductToItem(productForm)
 			if err != nil {
-				log.Fatal(err)
+				log.Println(err)
 			}
-			url = "https://api.webflow.com/beta/sites/" + siteId + "/products"
+			url = "https://api.webflow.com/v2/sites/" + siteId + "/products"
 			// url = "https://webhook.site/f20fc6e6-54b7-4ebf-b027-1d466cafc692"
 		} else {
-			log.Fatal("Form " + form.FormName + " is not supported")
+			log.Println("Form " + form.FormName + " is not supported")
 		}
 
 		//Build POST request to CMS
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 
 		req.Header.Add("accept", "application/json")
@@ -176,11 +180,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 		defer resp.Body.Close()
 
 		log.Println("Response Status:", resp.Status)
+		if resp.Status != "200 OK" {
+			log.Printf("Response Status was %s for request body: %s", resp.Status, req.Body)
+		}
 	}
 }
 
@@ -192,7 +199,7 @@ func mapperCreatorToItem(form CreatorForm) ([]byte, error) {
 		FieldData: struct {
 			Slug                   string `json:"slug"`
 			Name                   string `json:"name"`
-			NotAcceptingCommission bool   `json:"not-accepting-commission-products"`
+			NotAcceptingCommission bool   `json:"not-accepting-commission-projects"`
 			AdditionalInfo         string `json:"additional-information"`
 			InstagramHandle        string `json:"instagram-handle-2"`
 			Occupation             string `json:"occupation"`
